@@ -26,20 +26,56 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField]
     MovementOrientation movementOrientation;
     public float speed = 5f;
+    Vector3 startPosition;
 
     // Line movement vars
-    public float lineMovementDistance = 5f;
+    public float LMDistance = 5f;
+    bool LMMovingPositive = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Set start position
+        startPosition = this.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Manage how the platfomr have to move 
+        switch (movementType) {
+            case MovementType.line:
+                moveInAStraightLine();
+            break;
+        }
+    }
+
+
+    // Move the platform in a straight line in movementOrientation
+    public void moveInAStraightLine() 
+    {
+        // Calculating final position depending of the orientation
+        float finalPosition = LMDistance + ((this.movementOrientation == MovementOrientation.vertical)?startPosition.y:startPosition.x);
         
+
+        // Moving the platform according to the orientation
+        switch (movementOrientation) {
+            case MovementOrientation.horizontal:
+                // Calculating path
+                if (transform.position.x >= finalPosition) {
+                    LMMovingPositive = false;
+                } else if (transform.position.x <= startPosition.x) {
+                    LMMovingPositive = true;
+                }
+                // Moving to the right 
+                if (LMMovingPositive) {
+                    transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y);
+                } else {
+                // Moving to the left
+                   transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y); 
+                } 
+            break;
+        }
     }
 
 }
