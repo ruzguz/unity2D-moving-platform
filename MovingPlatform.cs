@@ -7,7 +7,7 @@ using UnityEngine;
 // Platform Movement Type: show the platform is going ti move 
 public enum MovementType {
     line,
-    circle ,
+    circular,
     zigzag
 };
 
@@ -17,7 +17,7 @@ public enum LineMovementOrientation {
     vertical
 }
 
-public enum CircleMovementOrientation {
+public enum CircularMovementOrientation {
     clockwise,
     counterclockwise
 }
@@ -33,12 +33,11 @@ public class MovingPlatform : MonoBehaviour
     Vector3 startPosition;
 
     // Line movement vars
-    public LineMovementOrientation lineMovementOrientation;
-    public float lineDistance = 5f;
-    bool lineMovingPositive = true;
+    public LineMovementOrientation lineMovementOrientation; 
+    public float lineDistance = 5f; 
 
     // Circle movement vars
-    public CircleMovementOrientation circleMovementOrientation;
+    public CircularMovementOrientation circularMovementOrientation;
     float circleRadius = 5f;
 
     // Start is called before the first frame update
@@ -63,42 +62,24 @@ public class MovingPlatform : MonoBehaviour
     // Move the platform in a straight line in movementOrientation
     public void moveInAStraightLine() 
     {
-        // Calculating final position depending of the orientation
-        float finalPosition = lineDistance + ((this.lineMovementOrientation == LineMovementOrientation.vertical)?startPosition.y:startPosition.x);
-        
+        // Get current coordenates 
+        float x = transform.position.x;
+        float y = transform.position.y;
+        float z = transform.position.z;
 
-        // Moving the platform according to the orientation
+        // Calculating next position
         switch (lineMovementOrientation) {
             case LineMovementOrientation.horizontal:
-                // Calculating path
-                LMCalculateMovingPositive(this.transform.position.x, startPosition.x, finalPosition);
-                // Moving to the right 
-                if (lineMovingPositive) {
-                    transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y);
-                } else {
-                // Moving to the left
-                   transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y); 
-                } 
+                x = Mathf.Cos(Time.time * speed) * lineDistance;
             break;
             case LineMovementOrientation.vertical:
-                // Calculating path
-                LMCalculateMovingPositive(this.transform.position.y, startPosition.y, finalPosition);
-                if (lineMovingPositive) {
-                    transform.position = new Vector3(transform.position.x, transform.position.y + speed * Time.deltaTime);
-                } else {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - speed * Time.deltaTime);
-                }
+                y = Mathf.Sin(Time.time * speed) * lineDistance;
             break;
         }
-    }
 
-    // Change LMMovvingPositive according to the limits
-    void LMCalculateMovingPositive(float currentPosition, float min, float max) {
-        if (currentPosition >= max) {
-            lineMovingPositive = false;
-        } else if (currentPosition <= min) {
-            lineMovingPositive = true;
-        }
+        // Moving platform
+        this.transform.position = new Vector3(x,y,z);
+
     }
 
 }
