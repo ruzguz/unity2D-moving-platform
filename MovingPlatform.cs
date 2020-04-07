@@ -23,12 +23,12 @@ public class MovingPlatform : MonoBehaviour
     // General vars
     [SerializeField]
     MovementType movementType;
-    [SerializeField]
-    MovementOrientation movementOrientation;
+
     public float speed = 5f;
     Vector3 startPosition;
 
     // Line movement vars
+    public MovementOrientation lineMovementOrientation;
     public float lineDistance = 5f;
     bool lineMovingPositive = true;
 
@@ -55,11 +55,11 @@ public class MovingPlatform : MonoBehaviour
     public void moveInAStraightLine() 
     {
         // Calculating final position depending of the orientation
-        float finalPosition = lineDistance + ((this.movementOrientation == MovementOrientation.vertical)?startPosition.y:startPosition.x);
+        float finalPosition = lineDistance + ((this.lineMovementOrientation == MovementOrientation.vertical)?startPosition.y:startPosition.x);
         
 
         // Moving the platform according to the orientation
-        switch (movementOrientation) {
+        switch (lineMovementOrientation) {
             case MovementOrientation.horizontal:
                 // Calculating path
                 LMCalculateMovingPositive(this.transform.position.x, startPosition.x, finalPosition);
