@@ -12,9 +12,14 @@ public enum MovementType {
 };
 
 // Movment orientation (if is applicable)
-public enum MovementOrientation {
+public enum LineMovementOrientation {
     horizontal,
     vertical
+}
+
+public enum CircleMovementOrientation {
+    clockwise,
+    counterclockwise
 }
 
 public class MovingPlatform : MonoBehaviour
@@ -28,9 +33,13 @@ public class MovingPlatform : MonoBehaviour
     Vector3 startPosition;
 
     // Line movement vars
-    public MovementOrientation lineMovementOrientation;
+    public LineMovementOrientation lineMovementOrientation;
     public float lineDistance = 5f;
     bool lineMovingPositive = true;
+
+    // Circle movement vars
+    public CircleMovementOrientation circleMovementOrientation;
+    float circleRadius = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -55,12 +64,12 @@ public class MovingPlatform : MonoBehaviour
     public void moveInAStraightLine() 
     {
         // Calculating final position depending of the orientation
-        float finalPosition = lineDistance + ((this.lineMovementOrientation == MovementOrientation.vertical)?startPosition.y:startPosition.x);
+        float finalPosition = lineDistance + ((this.lineMovementOrientation == LineMovementOrientation.vertical)?startPosition.y:startPosition.x);
         
 
         // Moving the platform according to the orientation
         switch (lineMovementOrientation) {
-            case MovementOrientation.horizontal:
+            case LineMovementOrientation.horizontal:
                 // Calculating path
                 LMCalculateMovingPositive(this.transform.position.x, startPosition.x, finalPosition);
                 // Moving to the right 
@@ -71,7 +80,7 @@ public class MovingPlatform : MonoBehaviour
                    transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y); 
                 } 
             break;
-            case MovementOrientation.vertical:
+            case LineMovementOrientation.vertical:
                 // Calculating path
                 LMCalculateMovingPositive(this.transform.position.y, startPosition.y, finalPosition);
                 if (lineMovingPositive) {
