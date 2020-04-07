@@ -62,11 +62,7 @@ public class MovingPlatform : MonoBehaviour
         switch (movementOrientation) {
             case MovementOrientation.horizontal:
                 // Calculating path
-                if (transform.position.x >= finalPosition) {
-                    LMMovingPositive = false;
-                } else if (transform.position.x <= startPosition.x) {
-                    LMMovingPositive = true;
-                }
+                LMCalculateMovingPositive(this.transform.position.x, startPosition.x, finalPosition);
                 // Moving to the right 
                 if (LMMovingPositive) {
                     transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y);
@@ -75,6 +71,15 @@ public class MovingPlatform : MonoBehaviour
                    transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y); 
                 } 
             break;
+        }
+    }
+
+    // Change LMMovvingPositive according to the limits
+    void LMCalculateMovingPositive(float currentPosition, float min, float max) {
+        if (currentPosition >= max) {
+            LMMovingPositive = false;
+        } else if (currentPosition <= min) {
+            LMMovingPositive = true;
         }
     }
 
