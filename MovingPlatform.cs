@@ -29,8 +29,8 @@ public class MovingPlatform : MonoBehaviour
     Vector3 startPosition;
 
     // Line movement vars
-    public float LMDistance = 5f;
-    bool LMMovingPositive = true;
+    public float lineDistance = 5f;
+    bool lineMovingPositive = true;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +55,7 @@ public class MovingPlatform : MonoBehaviour
     public void moveInAStraightLine() 
     {
         // Calculating final position depending of the orientation
-        float finalPosition = LMDistance + ((this.movementOrientation == MovementOrientation.vertical)?startPosition.y:startPosition.x);
+        float finalPosition = lineDistance + ((this.movementOrientation == MovementOrientation.vertical)?startPosition.y:startPosition.x);
         
 
         // Moving the platform according to the orientation
@@ -64,12 +64,21 @@ public class MovingPlatform : MonoBehaviour
                 // Calculating path
                 LMCalculateMovingPositive(this.transform.position.x, startPosition.x, finalPosition);
                 // Moving to the right 
-                if (LMMovingPositive) {
+                if (lineMovingPositive) {
                     transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y);
                 } else {
                 // Moving to the left
                    transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y); 
                 } 
+            break;
+            case MovementOrientation.vertical:
+                // Calculating path
+                LMCalculateMovingPositive(this.transform.position.y, startPosition.y, finalPosition);
+                if (lineMovingPositive) {
+                    transform.position = new Vector3(transform.position.x, transform.position.y + speed * Time.deltaTime);
+                } else {
+                    transform.position = new Vector3(transform.position.x, transform.position.y - speed * Time.deltaTime);
+                }
             break;
         }
     }
@@ -77,9 +86,9 @@ public class MovingPlatform : MonoBehaviour
     // Change LMMovvingPositive according to the limits
     void LMCalculateMovingPositive(float currentPosition, float min, float max) {
         if (currentPosition >= max) {
-            LMMovingPositive = false;
+            lineMovingPositive = false;
         } else if (currentPosition <= min) {
-            LMMovingPositive = true;
+            lineMovingPositive = true;
         }
     }
 
