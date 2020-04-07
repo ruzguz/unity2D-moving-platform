@@ -38,7 +38,7 @@ public class MovingPlatform : MonoBehaviour
 
     // Circle movement vars
     public CircularMovementOrientation circularMovementOrientation;
-    float circleRadius = 5f;
+    public float circleRadius = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +55,9 @@ public class MovingPlatform : MonoBehaviour
             case MovementType.line:
                 moveInAStraightLine();
             break;
+            case MovementType.circular:
+                MoveInCircles();
+            break;
         }
     }
 
@@ -70,16 +73,29 @@ public class MovingPlatform : MonoBehaviour
         // Calculating next position
         switch (lineMovementOrientation) {
             case LineMovementOrientation.horizontal:
-                x = Mathf.Cos(Time.time * speed) * lineDistance;
+                x = startPosition.x + Mathf.Cos(Time.time * speed) * lineDistance;
             break;
             case LineMovementOrientation.vertical:
-                y = Mathf.Sin(Time.time * speed) * lineDistance;
+                y = startPosition.y + Mathf.Sin(Time.time * speed) * lineDistance;
             break;
         }
 
         // Moving platform
         this.transform.position = new Vector3(x,y,z);
+    }
 
+    public void MoveInCircles() 
+    {
+        // Calculating direction (CW or CCW)
+        int direction = (circularMovementOrientation == CircularMovementOrientation.counterclockwise)?1:-1;
+
+        // Calculating coordenates 
+        float x = Mathf.Cos(Time.time * speed * direction) * circleRadius;
+        float y = Mathf.Sin(Time.time * speed * direction) * circleRadius;
+        float z = transform.position.z;
+
+        // Moving Platform
+        this.transform.position = new Vector3(x,y,z);
     }
 
 }
