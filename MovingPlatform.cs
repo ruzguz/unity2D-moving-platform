@@ -46,12 +46,15 @@ public class MovingPlatform : MonoBehaviour
     // Zigzag movement vars
     public int zigzagLines = 4;
     public float zigzagLineDistance = 2;
+    float zigzagStep;
+    bool zigzagMovingPositive = true;
 
     // Start is called before the first frame update
     void Start()
     {
         // Set start position
         startPosition = this.transform.position;
+        zigzagStep = startPosition.x;
     }
 
     // Update is called once per frame
@@ -112,13 +115,25 @@ public class MovingPlatform : MonoBehaviour
 
 
     public void MoveInZigzag() 
-    {
+    {   
+        if (transform.position.x >= startPosition.x + zigzagLineDistance * zigzagLines) {
+            zigzagMovingPositive = false;
+        } else if (transform.position.x <= startPosition.x) {
+            zigzagMovingPositive = true;
+        }
 
-
-        // calculating coordenates
-        float factor = (Mathf.Acos(Mathf.Cos(Time.time * speed * (float)Math.PI)) / (float)Math.PI);
-        float x = Time.time * zigzagLineDistance;
+        // Calculating coordenates
+        float factor = (Mathf.Acos(Mathf.Cos(zigzagStep * (float)Math.PI)) / (float)Math.PI);
+        float x = zigzagStep * zigzagLineDistance;
         float y = startPosition.x + factor * zigzagLineDistance;
+        
+        if (zigzagMovingPositive) {
+            zigzagStep += speed/50;
+        } else {
+            zigzagStep -= speed/50;
+        }
+
+        //Debug.Log(zigzagStep+" "+ movingPositive);
 
 
         // Moving platform 
