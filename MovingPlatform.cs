@@ -29,7 +29,7 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField]
     MovementType movementType;
 
-    public float speed = 5f;
+    public float speed = 2f;
     Vector3 startPosition;
 
     // Line movement vars
@@ -39,6 +39,8 @@ public class MovingPlatform : MonoBehaviour
     // Circle movement vars
     public CircularMovementOrientation circularMovementOrientation;
     public float circleRadius = 5f;
+
+    // Zigzag movement vars
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +52,7 @@ public class MovingPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Manage how the platfomr have to move 
+        // Manage how the platform have to move 
         switch (movementType) {
             case MovementType.line:
                 moveInAStraightLine();
@@ -70,7 +72,7 @@ public class MovingPlatform : MonoBehaviour
         float y = transform.position.y;
         float z = transform.position.z;
 
-        // Calculating next position
+        // Calculating next position according to the orientation selected
         switch (lineMovementOrientation) {
             case LineMovementOrientation.horizontal:
                 x = startPosition.x + Mathf.Cos(Time.time * speed) * lineDistance;
@@ -90,12 +92,13 @@ public class MovingPlatform : MonoBehaviour
         int direction = (circularMovementOrientation == CircularMovementOrientation.counterclockwise)?1:-1;
 
         // Calculating coordenates 
-        float x = Mathf.Cos(Time.time * speed * direction) * circleRadius;
-        float y = Mathf.Sin(Time.time * speed * direction) * circleRadius;
+        float x = startPosition.x + Mathf.Cos(Time.time * speed * direction) * circleRadius;
+        float y = startPosition.y + Mathf.Sin(Time.time * speed * direction) * circleRadius;
         float z = transform.position.z;
 
         // Moving Platform
         this.transform.position = new Vector3(x,y,z);
+
     }
 
 }
