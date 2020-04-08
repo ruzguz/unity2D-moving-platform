@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 
 
@@ -42,6 +44,8 @@ public class MovingPlatform : MonoBehaviour
     public float circleRadius = 5f;
 
     // Zigzag movement vars
+    public int zigzagLines = 4;
+    public float zigzagLineDistance = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +64,9 @@ public class MovingPlatform : MonoBehaviour
             break;
             case MovementType.circular:
                 MoveInCircles();
+            break;
+            case MovementType.zigzag:
+                MoveInZigzag();
             break;
         }
     }
@@ -101,6 +108,21 @@ public class MovingPlatform : MonoBehaviour
         // Moving Platform
         this.transform.position = new Vector3(x,y,z);
 
+    }
+
+
+    public void MoveInZigzag() 
+    {
+
+
+        // calculating coordenates
+        float factor = (Mathf.Acos(Mathf.Cos(Time.time * speed * (float)Math.PI)) / (float)Math.PI);
+        float x = Time.time * zigzagLineDistance;
+        float y = startPosition.x + factor * zigzagLineDistance;
+
+
+        // Moving platform 
+        this.transform.position = new Vector3(x,y);
     }
 
     // Funtion to see the platform path (only for debugging)
