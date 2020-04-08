@@ -94,6 +94,7 @@ public class MovingPlatform : MonoBehaviour
 
         // Calculating coordenates 
         float x = startPosition.x + Mathf.Cos(Time.time * speed * direction) * circleRadius;
+        x -= circleRadius;
         float y = startPosition.y + Mathf.Sin(Time.time * speed * direction) * circleRadius;
         float z = transform.position.z;
 
@@ -104,12 +105,12 @@ public class MovingPlatform : MonoBehaviour
 
     // Funtion to see the platform path (only for debugging)
     private void OnDrawGizmosSelected() {
-
         Gizmos.color = gizmoColor;
+        Vector3 src = Vector3.zero;
 
         switch (movementType) {
             case MovementType.line:
-                Vector3 src = new Vector3 (startPosition.x - lineDistance, startPosition.y);
+                src = new Vector3 (startPosition.x - lineDistance, startPosition.y);
                 Vector3 dest = new Vector3 (startPosition.x + lineDistance, startPosition.y); 
                 Gizmos.DrawLine(src, dest);
                 src = new Vector3 (startPosition.x, startPosition.y - lineDistance);
@@ -118,10 +119,10 @@ public class MovingPlatform : MonoBehaviour
             break;
             case MovementType.circular:
                 // Cicular movement 
-                Gizmos.DrawWireSphere(startPosition, circleRadius);
+                src = new Vector3(startPosition.x - circleRadius, startPosition.y);
+                Gizmos.DrawWireSphere(src, circleRadius);
             break;
             case MovementType.zigzag:
-            
             break;
         }
     }
