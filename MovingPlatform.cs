@@ -31,6 +31,7 @@ public class MovingPlatform : MonoBehaviour
 
     public float speed = 2f;
     Vector3 startPosition;
+    public Color gizmoColor = Color.yellow;
 
     // Line movement vars
     public LineMovementOrientation lineMovementOrientation; 
@@ -68,9 +69,9 @@ public class MovingPlatform : MonoBehaviour
     public void moveInAStraightLine() 
     {
         // Get current coordenates 
-        float x = transform.position.x;
-        float y = transform.position.y;
-        float z = transform.position.z;
+        float x = startPosition.x;
+        float y = startPosition.y;
+        float z = startPosition.z;
 
         // Calculating next position according to the orientation selected
         switch (lineMovementOrientation) {
@@ -99,6 +100,30 @@ public class MovingPlatform : MonoBehaviour
         // Moving Platform
         this.transform.position = new Vector3(x,y,z);
 
+    }
+
+    // Funtion to see the platform path (only for debugging)
+    private void OnDrawGizmosSelected() {
+
+        Gizmos.color = gizmoColor;
+
+        switch (movementType) {
+            case MovementType.line:
+                Vector3 src = new Vector3 (startPosition.x - lineDistance, startPosition.y);
+                Vector3 dest = new Vector3 (startPosition.x + lineDistance, startPosition.y); 
+                Gizmos.DrawLine(src, dest);
+                src = new Vector3 (startPosition.x, startPosition.y - lineDistance);
+                dest = new Vector3 (startPosition.x, startPosition.y + lineDistance); 
+                Gizmos.DrawLine(src, dest);
+            break;
+            case MovementType.circular:
+                // Cicular movement 
+                Gizmos.DrawWireSphere(startPosition, circleRadius);
+            break;
+            case MovementType.zigzag:
+            
+            break;
+        }
     }
 
 }
