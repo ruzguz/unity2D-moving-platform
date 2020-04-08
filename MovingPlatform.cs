@@ -76,7 +76,7 @@ public class MovingPlatform : MonoBehaviour
         // Calculating next position according to the orientation selected
         switch (lineMovementOrientation) {
             case LineMovementOrientation.horizontal:
-                x = startPosition.x + Mathf.Cos(Time.time * speed) * lineDistance;
+                x = startPosition.x + Mathf.Sin(Time.time * speed) * lineDistance;
             break;
             case LineMovementOrientation.vertical:
                 y = startPosition.y + Mathf.Sin(Time.time * speed) * lineDistance;
