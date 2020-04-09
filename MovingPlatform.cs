@@ -133,7 +133,7 @@ public class MovingPlatform : MonoBehaviour
             zigzagStep -= speed/50;
         }
 
-        //Debug.Log(zigzagStep+" "+ movingPositive);
+        //Debug.Log(zigzagStep+" "+ zigzagMovingPositive);
 
 
         // Moving platform 
