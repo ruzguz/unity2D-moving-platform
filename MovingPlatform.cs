@@ -6,19 +6,20 @@ using UnityEngine;
 
 
 
-// Platform Movement Type: show the platform is going ti move 
+// Different types of movements for the platform
 public enum MovementType {
     line,
     circular,
     zigzag
 };
 
-// Movment orientation (if is applicable)
+// Movement orientation for line movement type
 public enum LineMovementOrientation {
     horizontal,
     vertical
 }
 
+// Movement orientation for circular movement type
 public enum CircularMovementOrientation {
     clockwise,
     counterclockwise
@@ -27,10 +28,10 @@ public enum CircularMovementOrientation {
 public class MovingPlatform : MonoBehaviour
 {
 
-    // General vars
+    // General vars (affect all types of movemens)
+    
     [SerializeField]
     MovementType movementType;
-
     public float speed = 2f;
     Vector3 startPosition;
     public Color gizmoColor = Color.yellow;
@@ -60,7 +61,7 @@ public class MovingPlatform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Manage how the platform have to move 
+        // Manage how the platform have to move according to movementType var
         switch (movementType) {
             case MovementType.line:
                 moveInAStraightLine();
