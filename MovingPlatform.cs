@@ -146,11 +146,12 @@ public class MovingPlatform : MonoBehaviour
     private void OnDrawGizmosSelected() {
         Gizmos.color = gizmoColor;
         Vector3 src = Vector3.zero;
+        Vector3 dest = Vector3.zero;
 
         switch (movementType) {
             case MovementType.line:
                 src = new Vector3 (startPosition.x - lineDistance, startPosition.y);
-                Vector3 dest = new Vector3 (startPosition.x + lineDistance, startPosition.y); 
+                dest = new Vector3 (startPosition.x + lineDistance, startPosition.y); 
                 Gizmos.DrawLine(src, dest);
                 src = new Vector3 (startPosition.x, startPosition.y - lineDistance);
                 dest = new Vector3 (startPosition.x, startPosition.y + lineDistance); 
@@ -162,6 +163,27 @@ public class MovingPlatform : MonoBehaviour
                 Gizmos.DrawWireSphere(src, circleRadius);
             break;
             case MovementType.zigzag:
+                float x = startPosition.x;
+                float y = startPosition.y;
+
+                for(int i = 0; i < zigzagLines; i++){
+                    
+                    // Current position
+                    src = new Vector3(x, y);
+                    
+                    // Calculating next position
+                    x += zigzagLineDistance;
+
+                    // If "i" is even draw line going up, else, draw line going down
+                    // the zigzag movement always start going up
+                    y = (i%2 == 0)?startPosition.y + zigzagLineDistance:startPosition.y;
+
+                    dest = new Vector3(x,y);
+
+                    // Drawing line
+                    Gizmos.DrawLine(src, dest);
+
+                }
             break;
         }
     }
