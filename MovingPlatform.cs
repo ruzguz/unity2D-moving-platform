@@ -54,7 +54,7 @@ public class MovingPlatform : MonoBehaviour
     {
         // Set start position
         startPosition = this.transform.position;
-        zigzagStep = startPosition.x;
+        zigzagStep = 0f;
     }
 
     // Update is called once per frame
@@ -116,6 +116,7 @@ public class MovingPlatform : MonoBehaviour
 
     public void MoveInZigzag() 
     {   
+        // Changing direction when the platform reach the limits 
         if (transform.position.x >= startPosition.x + zigzagLineDistance * zigzagLines) {
             zigzagMovingPositive = false;
         } else if (transform.position.x <= startPosition.x) {
@@ -124,8 +125,8 @@ public class MovingPlatform : MonoBehaviour
 
         // Calculating coordenates
         float factor = (Mathf.Acos(Mathf.Cos(zigzagStep * (float)Math.PI)) / (float)Math.PI);
-        float x = zigzagStep * zigzagLineDistance;
-        float y = startPosition.x + factor * zigzagLineDistance;
+        float x = startPosition.x + zigzagStep * zigzagLineDistance;
+        float y = startPosition.y + factor * zigzagLineDistance;
         
         if (zigzagMovingPositive) {
             zigzagStep += speed/50;
@@ -133,7 +134,8 @@ public class MovingPlatform : MonoBehaviour
             zigzagStep -= speed/50;
         }
 
-        //Debug.Log(zigzagStep+" "+ zigzagMovingPositive);
+        // keep platform within the limits
+        zigzagStep = Mathf.Clamp(zigzagStep, 0, zigzagLines);
 
 
         // Moving platform 
