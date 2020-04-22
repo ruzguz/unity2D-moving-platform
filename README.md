@@ -2,7 +2,7 @@
 
 This is a script to configure a moving platform 2D easily in Unity.
 
-![](https://i.imgur.com/X5SnsSI.gifv)
+![](https://i.imgur.com/X5SnsSI.gif)
 
 ## Setup
 
